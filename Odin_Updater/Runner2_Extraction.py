@@ -5,9 +5,11 @@ import time
 from Helper.Source import connect_to_db
 from Odin_Updater.Helper_21 import SubmissionFiles_Relevance
 
-Conn_Odin = connect_to_db()
+Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFiles\\"
+
+
 # %% List of files
-Temp_DailyFiles= "D:\\DB_Odin\\DailyFiles\\"
+Conn_Odin = connect_to_db()
 SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin,
                                                Path_DailyFiles= Temp_DailyFiles)
 
@@ -21,7 +23,7 @@ for SubmissionCsv_File in SubmissionCsv_List:
     print("*****"*20)
     print("Extracting Submission File from csv: {}".format(SubmissionCsv_File))
     print("*****" * 20)
-    SubmissionFile = pd.read_csv(Temp_DailyFiles+SubmissionCsv_File)
+    SubmissionFile = pd.read_csv(Path_DailyFiles+SubmissionCsv_File)
     SubmissionFile["IsClosed"]=0
 
     ###################################################################

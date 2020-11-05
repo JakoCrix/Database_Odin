@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 from Helper.Source import connect_to_reddit
 
-Path_DailyFiles= "D:\\DB_Odin\\DailyFiles\\"
+Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFiles\\"
 
 # %% Function Creation
 def TrackingSubmissions(Subreddit_Name, MinimumComments = 30):
