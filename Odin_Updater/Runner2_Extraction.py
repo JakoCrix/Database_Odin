@@ -10,8 +10,8 @@ Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFile
 
 # %% List of files
 Conn_Odin = connect_to_db()
-SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin,
-                                               Path_DailyFiles= Temp_DailyFiles)
+  = SubmissionFiles_Relevance(Conn_Odin,
+                                               Path_DailyFiles= Path_DailyFiles)
 
 # %% Extraction Phase
 for SubmissionCsv_File in SubmissionCsv_List:
@@ -78,7 +78,7 @@ for SubmissionCsv_File in SubmissionCsv_List:
             pass
         else:
             OdinInsert_CommentInformation(Conn_Odin, Submission_List[SubmissionIndex], Temp_Comments2)
-            OdinInsert_Comment(Conn_Odin, Submission_List[SubmissionIndex], Temp_Comments2)
+            OdinInsert_Comment(Conn_Odin, Temp_Comments2)
 
 
     # %% Database Insertion- LHS

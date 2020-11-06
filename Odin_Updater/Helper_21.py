@@ -6,7 +6,7 @@ import re
 
 # %% Identifying Submission files to process
 def SubmissionFiles_Relevance(Conn_Odin,
-                              Path_DailyFiles= "D:\\DB_Odin\\DailyFiles\\"):
+                              Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFiles\\"):
     # File Check
     SubmissionFile_List= listdir(Path_DailyFiles)
     SubmissionFile_ListDate= [re.sub("""SubmissionFile_|.csv""", "", x) for x in SubmissionFile_List]
