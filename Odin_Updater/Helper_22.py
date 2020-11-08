@@ -7,7 +7,7 @@ def SubmissionFileModify1_Exclusions(conn_Object, SubmissionFile_csv):
     # SubmissionFile_csv= SubmissionFile
     OG_Columns= list(SubmissionFile_csv.columns)
 
-    # %% Handling Closed Submissions
+    # Handling Closed Submissions
     DontExtract = pd.read_sql_query("""SELECT ID_Submission, sum(IsClosed) FROM Submission_Tracking 
                                           group by ID_Submission having sum(IsClosed)>=1""", conn_Object)
     DontExtract_List = DontExtract["ID_Submission"].unique().tolist()
@@ -26,8 +26,10 @@ def SubmissionFileModify1_Exclusions(conn_Object, SubmissionFile_csv):
 # %% Processing 2
 def SubmissionFileModify2_PotentialClosures(conn_Object, SubmissionFile_csv,
                                             DfName_SubmissionID, DfName_NumComments):
-    # %% Admin
-    # SubmissionFile_csv=SubmissionFile_Processed1; DfName_SubmissionID= "Submission_ID"; DfName_NumComments= "Submission_NumComments"
+    # Admin
+    # conn_Object= Conn_Odin; SubmissionFile_csv=SubmissionFile_Processed1;
+    # DfName_SubmissionID= "Submission_ID"; DfName_NumComments= "Submission_NumComments"
+
     OG_Columns= list(SubmissionFile_csv.columns)
 
     OGExistingClosed = SubmissionFile_csv.groupby([DfName_SubmissionID])[['IsClosed']].agg('sum').reset_index()
