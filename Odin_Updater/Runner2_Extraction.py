@@ -1,21 +1,21 @@
 # %% Admin
 import pandas as pd
 import time
+from datetime import datetime
+from os import listdir
 
 from Helper.Source import connect_to_db
-from Odin_Updater.Helper_21 import SubmissionFiles_Relevance
 
 Path_DailyFiles= "DailyFiles\\"
-
-# %% List of files
 Conn_Odin = connect_to_db()
-SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin,
-                                               Path_DailyFiles= Path_DailyFiles)
+
+# %% Database Check
+# %% List of files
+from Odin_Updater.Helper_21 import SubmissionFiles_Relevance
+SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin, Path_DailyFiles= Path_DailyFiles)
 
 # %% Extraction Phase
 for SubmissionCsv_File in SubmissionCsv_List:
-    # SubmissionCsv_File= SubmissionCsv_List[0]
-
     ###################################################################
     # Admin and Extraction
     Conn_Odin = connect_to_db()
@@ -30,28 +30,23 @@ for SubmissionCsv_File in SubmissionCsv_List:
     from Odin_Updater.Helper_22 import SubmissionFileModify1_Exclusions, SubmissionFileModify2_PotentialClosures
 
     SubmissionFile_Processed1 = SubmissionFileModify1_Exclusions(Conn_Odin, SubmissionFile)
-    SubmissionFile_Processed2 = SubmissionFileModify2_PotentialClosures(Conn_Odin,
-                                                                        SubmissionFile_Processed1,
-                                                                        DfName_SubmissionID="Submission_ID",
-                                                                        DfName_NumComments= "Submission_NumComments")
-    # Database Insertion File
+    SubmissionFile_Processed2 = SubmissionFileModify2_PotentialClosures(Conn_Odin, SubmissionFile_Processed1,
+                                                                        "Submission_ID", "Submission_NumComments")
+    # To be Inserted
     SubmissionFile_ExtractionList = SubmissionFile_Processed2[SubmissionFile_Processed2["IsClosed"] == False]
 
     ###################################################################
     # Database Insertion
     from Odin_Updater.Helper_23 import Submissions_ExtractionList, OdinExtraction_Comments
-
-    Submission_List= Submissions_ExtractionList(Conn_Odin, SubmissionFile_ExtractionList)
-    SubmissionComments_Df = OdinExtraction_Comments(Conn_Odin, Submission_List)
-
-    ###################################################################
-    # %% Database Insertion- RHS
-    # RHS
     from Helper.RedditExtraction_Comments import DG_Comments
     from Helper.Odin_Insertion import OdinInsert_CommentInformation, OdinInsert_Comment
     from Odin_Updater.Helper_23 import Comments_ExistenceCheck
 
+    # Loop Preparations
+    Submission_List= Submissions_ExtractionList(Conn_Odin, SubmissionFile_ExtractionList)
+    SubmissionComments_Df = OdinExtraction_Comments(Conn_Odin, Submission_List)
 
+    # %% Database Insertion- RHS
     for SubmissionIndex in range(len(Submission_List)):
         # SubmissionIndex=630
         print("____" * 20)
@@ -89,4 +84,18 @@ for SubmissionCsv_File in SubmissionCsv_List:
 
     Conn_Odin.close()
 
+# %% Logging
+from Helper.Odin_Checker import OdinChecker_Rows
+OdinStatus_values= OdinChecker_Rows(Conn_Odin)
+OdinStatus2= pd.DataFrame({"Date": str(datetime.now())[:17],
+                           "Rows_SubredditInfo": [OdinStatus_values["Subreddit_Info"]],
+                           "Rows_SubmissionInfo": [OdinStatus_values["Submission_Info"]],
+                           "Rows_SubmissionTracking": [OdinStatus_values["Submission_Tracking"]],
+                           "Rows_CommentInformation": [OdinStatus_values["Comment_Information"]],
+                           "Rows_Comment": [OdinStatus_values["Comment"]]})
+
+if "DBRows.csv" not in listdir("D:\\\DB_Odin\\Status\\"):
+    OdinStatus2.to_csv("D:\\\DB_Odin\\Status\\DBRows.csv", mode="w",header=False, index= False)
+else:
+    OdinStatus2.to_csv("D:\\\DB_Odin\\Status\\DBRows.csv", mode="a",header=False, index= False)
 
