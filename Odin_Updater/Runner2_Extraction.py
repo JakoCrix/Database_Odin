@@ -10,8 +10,7 @@ Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFile
 
 # %% List of files
 Conn_Odin = connect_to_db()
-  = SubmissionFiles_Relevance(Conn_Odin,
-                                               Path_DailyFiles= Path_DailyFiles)
+SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin,Path_DailyFiles= Path_DailyFiles)
 
 # %% Extraction Phase
 for SubmissionCsv_File in SubmissionCsv_List:
