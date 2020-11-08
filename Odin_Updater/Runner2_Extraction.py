@@ -5,12 +5,12 @@ import time
 from Helper.Source import connect_to_db
 from Odin_Updater.Helper_21 import SubmissionFiles_Relevance
 
-Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFiles\\"
-
+Path_DailyFiles= "DailyFiles\\"
 
 # %% List of files
 Conn_Odin = connect_to_db()
-SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin,Path_DailyFiles= Path_DailyFiles)
+SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin,
+                                               Path_DailyFiles= Path_DailyFiles)
 
 # %% Extraction Phase
 for SubmissionCsv_File in SubmissionCsv_List:
@@ -34,14 +34,15 @@ for SubmissionCsv_File in SubmissionCsv_List:
                                                                         SubmissionFile_Processed1,
                                                                         DfName_SubmissionID="Submission_ID",
                                                                         DfName_NumComments= "Submission_NumComments")
+    # Database Insertion File
     SubmissionFile_ExtractionList = SubmissionFile_Processed2[SubmissionFile_Processed2["IsClosed"] == False]
 
     ###################################################################
     # Database Insertion
-    from Odin_Updater.Helper_23 import OdinExtraction_Comments
+    from Odin_Updater.Helper_23 import Submissions_ExtractionList, OdinExtraction_Comments
 
-    TempExtract_List = SubmissionFile_ExtractionList["Submission_ID"]
-    SubmissionComments_Df = OdinExtraction_Comments(Conn_Odin, TempExtract_List)
+    Submission_List= Submissions_ExtractionList(Conn_Odin, SubmissionFile_ExtractionList)
+    SubmissionComments_Df = OdinExtraction_Comments(Conn_Odin, Submission_List)
 
     ###################################################################
     # %% Database Insertion- RHS
@@ -50,7 +51,6 @@ for SubmissionCsv_File in SubmissionCsv_List:
     from Helper.Odin_Insertion import OdinInsert_CommentInformation, OdinInsert_Comment
     from Odin_Updater.Helper_23 import Comments_ExistenceCheck
 
-    Submission_List = SubmissionFile_ExtractionList.Submission_ID.unique()
 
     for SubmissionIndex in range(len(Submission_List)):
         # SubmissionIndex=630
@@ -78,7 +78,7 @@ for SubmissionCsv_File in SubmissionCsv_List:
         else:
             OdinInsert_CommentInformation(Conn_Odin, Submission_List[SubmissionIndex], Temp_Comments2)
             OdinInsert_Comment(Conn_Odin, Temp_Comments2)
-
+    print("____" * 20)
 
     # %% Database Insertion- LHS
     from Helper.Odin_Insertion import OdinInsert_SubmissionTracking, OdinInsert_SubredditInfo, OdinInsert_SubmissionInfo
@@ -88,9 +88,5 @@ for SubmissionCsv_File in SubmissionCsv_List:
     OdinInsert_SubmissionInfo(Conn_Odin, SubmissionFile_ExtractionList)
 
     Conn_Odin.close()
-
-
-
-
 
 
