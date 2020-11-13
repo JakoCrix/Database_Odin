@@ -10,7 +10,7 @@ Path_DailyFiles= "DailyFiles\\"
 Conn_Odin = connect_to_db()
 
 # %% Database Check
-# %% List of files
+#  List of files
 from Odin_Updater.Helper_21 import SubmissionFiles_Relevance
 SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin, Path_DailyFiles= Path_DailyFiles)
 
@@ -46,7 +46,7 @@ for SubmissionCsv_File in SubmissionCsv_List:
     Submission_List= Submissions_ExtractionList(Conn_Odin, SubmissionFile_ExtractionList)
     SubmissionComments_Df = OdinExtraction_Comments(Conn_Odin, Submission_List)
 
-    # %% Database Insertion- RHS
+     # %% Database Insertion- RHS
     for SubmissionIndex in range(len(Submission_List)):
         # SubmissionIndex=630
         print("____" * 20)
@@ -75,7 +75,7 @@ for SubmissionCsv_File in SubmissionCsv_List:
             OdinInsert_Comment(Conn_Odin, Temp_Comments2)
     print("____" * 20)
 
-    # %% Database Insertion- LHS
+    # Database Insertion- LHS
     from Helper.Odin_Insertion import OdinInsert_SubmissionTracking, OdinInsert_SubredditInfo, OdinInsert_SubmissionInfo
 
     OdinInsert_SubmissionTracking(Conn_Odin, SubmissionFile_ExtractionList)
@@ -86,6 +86,7 @@ for SubmissionCsv_File in SubmissionCsv_List:
 
 # %% Logging
 from Helper.Odin_Checker import OdinChecker_Rows
+Conn_Odin = connect_to_db()
 OdinStatus_values= OdinChecker_Rows(Conn_Odin)
 OdinStatus2= pd.DataFrame({"Date": str(datetime.now())[:17],
                            "Rows_SubredditInfo": [OdinStatus_values["Subreddit_Info"]],
@@ -99,3 +100,4 @@ if "DBRows.csv" not in listdir("D:\\\DB_Odin\\Status\\"):
 else:
     OdinStatus2.to_csv("D:\\\DB_Odin\\Status\\DBRows.csv", mode="a",header=False, index= False)
 
+Conn_Odin.close()
