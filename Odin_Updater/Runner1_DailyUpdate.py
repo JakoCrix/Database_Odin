@@ -96,11 +96,18 @@ def TrackingSubmissions(Subreddit_Name, MinimumComments = 30):
 SubmissionDf_stocks = TrackingSubmissions(Subreddit_Name= "stocks",MinimumComments = 20)
 SubmissionDf_investing = TrackingSubmissions(Subreddit_Name= "investing",MinimumComments = 20)
 SubmissionDf_wallstreetbets = TrackingSubmissions(Subreddit_Name= "wallstreetbets",MinimumComments = 20)
+SubmissionDf_stockpicks = TrackingSubmissions(Subreddit_Name= "Stock_Picks",MinimumComments = 20)
+SubmissionDf_securityanalysis = TrackingSubmissions(Subreddit_Name= "SecurityAnalysis",MinimumComments = 20)
+SubmissionDf_pennystocks = TrackingSubmissions(Subreddit_Name= "pennystocks",MinimumComments = 20)
 
 SubmissionDf = pd.DataFrame()
 SubmissionDf = SubmissionDf.append(SubmissionDf_stocks)
 SubmissionDf = SubmissionDf.append(SubmissionDf_investing)
 SubmissionDf = SubmissionDf.append(SubmissionDf_wallstreetbets)
+SubmissionDf = SubmissionDf.append(SubmissionDf_stockpicks)
+SubmissionDf = SubmissionDf.append(SubmissionDf_securityanalysis)
+SubmissionDf = SubmissionDf.append(SubmissionDf_pennystocks)
+
 
 SubmissionDf.to_csv(Path_DailyFiles+"SubmissionFile_"+\
                     str(datetime.date(datetime.now())).replace("-","")+".csv",
