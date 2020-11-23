@@ -3,7 +3,8 @@ from datetime import datetime
 import pandas as pd
 from Helper.Source import connect_to_reddit
 
-Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFiles\\"
+import sys
+sys.path.append('C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin')
 
 # %% Function Creation
 def TrackingSubmissions(Subreddit_Name, MinimumComments = 30):
@@ -93,6 +94,8 @@ def TrackingSubmissions(Subreddit_Name, MinimumComments = 30):
     return Df
 
 # %% Actual Extraction
+Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFiles\\"
+
 SubmissionDf_stocks = TrackingSubmissions(Subreddit_Name= "stocks",MinimumComments = 20)
 SubmissionDf_investing = TrackingSubmissions(Subreddit_Name= "investing",MinimumComments = 20)
 SubmissionDf_wallstreetbets = TrackingSubmissions(Subreddit_Name= "wallstreetbets",MinimumComments = 20)
@@ -108,8 +111,6 @@ SubmissionDf = SubmissionDf.append(SubmissionDf_stockpicks)
 SubmissionDf = SubmissionDf.append(SubmissionDf_securityanalysis)
 SubmissionDf = SubmissionDf.append(SubmissionDf_pennystocks)
 
-
-SubmissionDf.to_csv(Path_DailyFiles+"SubmissionFile_"+\
-                    str(datetime.date(datetime.now())).replace("-","")+".csv",
-                    index=False) # Temporary Saving
+# %% Saving
+SubmissionDf.to_csv(Path_DailyFiles+"SubmissionFile_"+datetime.now().strftime("%Y%m%d_%H%M")+".csv", index=False)        # Temporary Saving
 
