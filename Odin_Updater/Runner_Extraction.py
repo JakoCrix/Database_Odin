@@ -2,6 +2,7 @@
 import pandas as pd
 import time
 
+# System Files
 import sys
 sys.path.append('C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin')
 
@@ -10,8 +11,8 @@ from Helper.Source import connect_to_db
 Conn_Odin = connect_to_db()
 
 #  List of files
-from Odin_Updater.Helper_21 import SubmissionFiles_Relevance
-Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFiles\\"
+from Odin_Updater.Helper_1 import SubmissionFiles_Relevance
+Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\Database_Odin\\Submissions_LiveTracker\\Submissions_csvFile\\"
 SubmissionCsv_List = SubmissionFiles_Relevance(Conn_Odin, Path_DailyFiles= Path_DailyFiles)
 Conn_Odin.close()
 
@@ -29,7 +30,7 @@ for SubmissionCsv_File in SubmissionCsv_List:
 
     ###################################################################
     # Processing
-    from Odin_Updater.Helper_22v2 import *
+    from Odin_Updater.Helper_2v2 import *
 
     # LHS Manipulation
     SubmissionFile_LHSProcess1_1 = SubmissionFileModify1_Exclusions(Conn_Odin, SubmissionFile)
@@ -48,7 +49,7 @@ for SubmissionCsv_File in SubmissionCsv_List:
 
     ###################################################################
     # Database Insertion
-    from Odin_Updater.Helper_23 import *
+    from Odin_Updater.Helper_3 import *
     from Helper.RedditExtraction_Comments import DG_Comments
     from Helper.Odin_Insertion import OdinInsert_CommentInformation, OdinInsert_Comment
 

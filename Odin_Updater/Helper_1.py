@@ -5,8 +5,8 @@ from os import listdir
 import re
 
 # %% Identifying Submission files to process
-def SubmissionFiles_Relevance(Conn_Odin, Path_DailyFiles= "DailyFiles\\"):
-    # Conn_Odin= Conn_Odin; Path_DailyFiles= "DailyFiles\\"
+def SubmissionFiles_Relevance(Conn_Odin, Path_DailyFiles= "Submissions_LiveTracker\\"):
+    # Conn_Odin= Conn_Odin; Path_DailyFiles= "Submissions_LiveTracker\\"
 
     # File Check
     SubmissionFile_List= listdir(Path_DailyFiles)

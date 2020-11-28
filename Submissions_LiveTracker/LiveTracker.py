@@ -1,16 +1,18 @@
 # %% Admin
 from datetime import datetime
 import pandas as pd
-from Helper.Source import connect_to_reddit
 
+# System Files
 import sys
 sys.path.append('C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin')
 
+
 # %% Function Creation
-def TrackingSubmissions(Subreddit_Name, MinimumComments = 30):
+from Helper.Source import connect_to_reddit
+Conn_Odin= connect_to_reddit()
+def TrackingSubmissions(Subreddit_Name, Conn_Object,MinimumComments = 30):
     # Subreddit_Name="stocks"; MinimumComments=25
-    reddit=connect_to_reddit()
-    subreddit = reddit.subreddit(Subreddit_Name)
+    subreddit = Conn_Object.subreddit(Subreddit_Name)
     AllPosts = subreddit.new(limit = 2000)
 
     # Static Information Creations
@@ -94,23 +96,23 @@ def TrackingSubmissions(Subreddit_Name, MinimumComments = 30):
     return Df
 
 # %% Actual Extraction
-Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\\Database_Odin\\DailyFiles\\"
-
-SubmissionDf_stocks = TrackingSubmissions(Subreddit_Name= "stocks",MinimumComments = 20)
-SubmissionDf_investing = TrackingSubmissions(Subreddit_Name= "investing",MinimumComments = 20)
-SubmissionDf_wallstreetbets = TrackingSubmissions(Subreddit_Name= "wallstreetbets",MinimumComments = 20)
-SubmissionDf_stockpicks = TrackingSubmissions(Subreddit_Name= "Stock_Picks",MinimumComments = 20)
-SubmissionDf_securityanalysis = TrackingSubmissions(Subreddit_Name= "SecurityAnalysis",MinimumComments = 20)
-SubmissionDf_pennystocks = TrackingSubmissions(Subreddit_Name= "pennystocks",MinimumComments = 20)
+SubmissionDf_stocks = TrackingSubmissions(Conn_Object=Conn_Odin,     Subreddit_Name="stocks",        MinimumComments=20)
+SubmissionDf_investing = TrackingSubmissions(Conn_Object=Conn_Odin,  Subreddit_Name="investing",     MinimumComments = 20)
+SubmissionDf_wsb = TrackingSubmissions(Conn_Object=Conn_Odin,        Subreddit_Name="wallstreetbets",MinimumComments = 20)
+SubmissionDf_stockpicks = TrackingSubmissions(Conn_Object=Conn_Odin, Subreddit_Name="Stock_Picks",   MinimumComments = 20)
+SubmissionDf_sa = TrackingSubmissions(Conn_Object=Conn_Odin,         Subreddit_Name="SecurityAnalysis", MinimumComments = 20)
+SubmissionDf_pennystocks = TrackingSubmissions(Conn_Object=Conn_Odin,Subreddit_Name="pennystocks",   MinimumComments = 20)
 
 SubmissionDf = pd.DataFrame()
 SubmissionDf = SubmissionDf.append(SubmissionDf_stocks)
 SubmissionDf = SubmissionDf.append(SubmissionDf_investing)
-SubmissionDf = SubmissionDf.append(SubmissionDf_wallstreetbets)
+SubmissionDf = SubmissionDf.append(SubmissionDf_wsb)
 SubmissionDf = SubmissionDf.append(SubmissionDf_stockpicks)
-SubmissionDf = SubmissionDf.append(SubmissionDf_securityanalysis)
+SubmissionDf = SubmissionDf.append(SubmissionDf_sa)
 SubmissionDf = SubmissionDf.append(SubmissionDf_pennystocks)
 
 # %% Saving
-SubmissionDf.to_csv(Path_DailyFiles+"SubmissionFile_"+datetime.now().strftime("%Y%m%d_%H%M")+".csv", index=False)        # Temporary Saving
+Path_DailyFiles= "C:\\Users\\Andrew\\Documents\\GitHub\Database_Odin\\Submissions_LiveTracker\\Submissions_csvFile\\"
 
+SubmissionDf.to_csv(Path_DailyFiles+"SubmissionFile_"+datetime.now().strftime("%Y%m%d_%H%M")+".csv",
+                    index=False)                                                                   # Temporary Saving
