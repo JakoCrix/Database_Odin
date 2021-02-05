@@ -100,7 +100,7 @@ SubmissionDf_stocks = TrackingSubmissions(Conn_Object=Conn_Odin,     Subreddit_N
 SubmissionDf_investing = TrackingSubmissions(Conn_Object=Conn_Odin,  Subreddit_Name="investing",     MinimumComments = 20)
 SubmissionDf_wsb = TrackingSubmissions(Conn_Object=Conn_Odin,        Subreddit_Name="wallstreetbets",MinimumComments = 20)
 SubmissionDf_stockpicks = TrackingSubmissions(Conn_Object=Conn_Odin, Subreddit_Name="Stock_Picks",   MinimumComments = 20)
-SubmissionDf_sa = TrackingSubmissions(Conn_Object=Conn_Odin,         Subreddit_Name="SecurityAnalysis", MinimumComments = 20)
+# SubmissionDf_sa = TrackingSubmissions(Conn_Object=Conn_Odin,         Subreddit_Name="SecurityAnalysis", MinimumComments = 20)
 SubmissionDf_pennystocks = TrackingSubmissions(Conn_Object=Conn_Odin,Subreddit_Name="pennystocks",   MinimumComments = 20)
 
 SubmissionDf = pd.DataFrame()
@@ -108,7 +108,7 @@ SubmissionDf = SubmissionDf.append(SubmissionDf_stocks)
 SubmissionDf = SubmissionDf.append(SubmissionDf_investing)
 SubmissionDf = SubmissionDf.append(SubmissionDf_wsb)
 SubmissionDf = SubmissionDf.append(SubmissionDf_stockpicks)
-SubmissionDf = SubmissionDf.append(SubmissionDf_sa)
+#SubmissionDf = SubmissionDf.append(SubmissionDf_sa)
 SubmissionDf = SubmissionDf.append(SubmissionDf_pennystocks)
 
 # %% Saving
