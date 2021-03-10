@@ -6,7 +6,7 @@ import re
 
 def DG_Comments(SubmissionID_str):
     # %% Admin
-    # SubmissionID_str = "ipp3e9"
+    # SubmissionID_str = "ly92v2"
 
     reddit = praw.Reddit(client_id="d-nH_kadZ1Db4w", client_secret="GyYHEjL8cCnYByCHgb6AMBEjAWo",
                          username="EnigmaticWebcrawler", password="2d6cbbb99b", user_agent="prawtutorialv1")
